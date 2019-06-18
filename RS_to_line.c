@@ -14,19 +14,19 @@ static void answer_addr(void);
 static void send_data(void);
 static void send_byte(uint8_t byte);
 static void send_carrier(void);
-static bool request_UMV64(void);
+static bool request_UMV32(void);
 
 void __attribute__((__interrupt__)) _U1RXInterrupt(void)
 {
-    bool is_request_UMV64;
+    bool is_request_UMV32;
     
     ClrWdt();
     HL2 = 1;
 
     receive_data_RS485();
-    is_request_UMV64 = request_UMV64();
+    is_request_UMV32 = request_UMV32();
     
-    if (!is_request_UMV64)
+    if (!is_request_UMV32)
     {
         HL2 = 0;
         HL1 = 1;
@@ -69,9 +69,9 @@ static void receive_data_RS485(void)
     T1CONbits.TON = 0;
 }
 
-static bool request_UMV64(void)
+static bool request_UMV32(void)
 {
-    request_frame_UMV64 tmp;
+    request_frame_UMV32 tmp;
     uint8_t addr;
     
     addr = get_addr();
@@ -85,11 +85,20 @@ static bool request_UMV64(void)
     
     if (tmp.null_byte == NULL_BYTE &&
         tmp.addr == addr &&
-        tmp.setting_byte == SETTING_BYTE)
+        (tmp.setting_byte>>4 & 0x0E))
     {
-        send_data_to_KVF(tmp);
+        send_data_to_KVF(tmp, 0);
         return 1;
     }
+    
+    if (tmp.null_byte == NULL_BYTE &&
+        tmp.addr == (addr+1) &&
+        (tmp.setting_byte>>4 & 0x0E))
+    {
+        send_data_to_KVF(tmp, 1);
+        return 1;
+    }
+    
     return 0;
 }
 

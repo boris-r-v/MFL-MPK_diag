@@ -1,8 +1,10 @@
 #include "request_response_TDIM.h"
 
-static answer_frame_UMV64 answer_frame_UMV64_to_RS;
+static answer_frame_UMV32 answer_frame_UMV32_to_RS;
+static answer_frame_UMV32 answer_frame_UMV32_to_RS_0;
+static answer_frame_UMV32 answer_frame_UMV32_to_RS_1;
 static bool update_data = true;
-static uint8_t block_num = BLOCK_NUM_0;
+static uint8_t block_num = BLOCK_NUM_1;
 static uint8_t err_block_0 = 0;
 static uint8_t err_block_1 = 0;
 static uint8_t err_block_2 = 0;
@@ -14,18 +16,26 @@ static void send_byte_line(uint8_t byte);
 static uint8_t receive_byte_line(void);
 static void send_carrier(void);
 static void send_request_TDIM(void);
-static uint16_t form_CRC16 (answer_frame_UMV64 answer_frame);
+static uint16_t form_CRC16 (answer_frame_UMV32 answer_frame);
 static uint8_t form_answer_data(uint8_t data, uint8_t half_position);
 
 void init_answer_frame(void)
 {
     uint8_t i;
     
-    answer_frame_UMV64_to_RS.null_byte = NULL_BYTE;
-    answer_frame_UMV64_to_RS.addr = get_addr();
-    for (i = 0; i < UMV64_DATA_SIZE; i++)
-        answer_frame_UMV64_to_RS.data[i] = INIT_ANSWER_DATA;
-    answer_frame_UMV64_to_RS.crc16 = form_CRC16(answer_frame_UMV64_to_RS);
+    answer_frame_UMV32_to_RS_0.null_byte = NULL_BYTE;
+    answer_frame_UMV32_to_RS_0.addr = get_addr();
+    for (i = 0; i < UMV32_DATA_SIZE; i++)
+        answer_frame_UMV32_to_RS_0.data[i] = INIT_ANSWER_DATA;
+    answer_frame_UMV32_to_RS_0.diag = DIAG_BYTE_UMV32;
+    answer_frame_UMV32_to_RS_0.crc16 = form_CRC16(answer_frame_UMV32_to_RS_0);
+    
+    answer_frame_UMV32_to_RS_1.null_byte = NULL_BYTE;
+    answer_frame_UMV32_to_RS_1.addr = get_addr();
+    for (i = 0; i < UMV32_DATA_SIZE; i++)
+        answer_frame_UMV32_to_RS_1.data[i] = INIT_ANSWER_DATA;
+    answer_frame_UMV32_to_RS_1.diag = DIAG_BYTE_UMV32;
+    answer_frame_UMV32_to_RS_1.crc16 = form_CRC16(answer_frame_UMV32_to_RS_1);
 }
 
 void __attribute__((__interrupt__)) _T3Interrupt(void)
@@ -36,10 +46,10 @@ void __attribute__((__interrupt__)) _T3Interrupt(void)
         {
             if (err_block_0 > 3)
             {
-                answer_frame_UMV64_to_RS.data[0] = ERR_ANSWER_DATA;
-                answer_frame_UMV64_to_RS.data[1] = ERR_ANSWER_DATA;
-                answer_frame_UMV64_to_RS.data[2] = ERR_ANSWER_DATA;
-                answer_frame_UMV64_to_RS.data[3] = ERR_ANSWER_DATA;
+                answer_frame_UMV32_to_RS_0.data[0] = ERR_ANSWER_DATA;
+                answer_frame_UMV32_to_RS_0.data[1] = ERR_ANSWER_DATA;
+                answer_frame_UMV32_to_RS_0.data[2] = ERR_ANSWER_DATA;
+                answer_frame_UMV32_to_RS_0.data[3] = ERR_ANSWER_DATA;
             }
             else err_block_0++;
             break;
@@ -48,10 +58,10 @@ void __attribute__((__interrupt__)) _T3Interrupt(void)
         {
             if (err_block_1 > 3)
             {
-                answer_frame_UMV64_to_RS.data[4] = ERR_ANSWER_DATA;
-                answer_frame_UMV64_to_RS.data[5] = ERR_ANSWER_DATA;
-                answer_frame_UMV64_to_RS.data[6] = ERR_ANSWER_DATA;
-                answer_frame_UMV64_to_RS.data[7] = ERR_ANSWER_DATA;
+                answer_frame_UMV32_to_RS_0.data[4] = ERR_ANSWER_DATA;
+                answer_frame_UMV32_to_RS_0.data[5] = ERR_ANSWER_DATA;
+                answer_frame_UMV32_to_RS_0.data[6] = ERR_ANSWER_DATA;
+                answer_frame_UMV32_to_RS_0.data[7] = ERR_ANSWER_DATA;
             }
             else err_block_1++;
             break;
@@ -60,10 +70,10 @@ void __attribute__((__interrupt__)) _T3Interrupt(void)
         {
             if (err_block_2 > 3)
             {
-                answer_frame_UMV64_to_RS.data[8] = ERR_ANSWER_DATA;
-                answer_frame_UMV64_to_RS.data[9] = ERR_ANSWER_DATA;
-                answer_frame_UMV64_to_RS.data[10] = ERR_ANSWER_DATA;
-                answer_frame_UMV64_to_RS.data[11] = ERR_ANSWER_DATA;
+                answer_frame_UMV32_to_RS_1.data[0] = ERR_ANSWER_DATA;
+                answer_frame_UMV32_to_RS_1.data[1] = ERR_ANSWER_DATA;
+                answer_frame_UMV32_to_RS_1.data[2] = ERR_ANSWER_DATA;
+                answer_frame_UMV32_to_RS_1.data[3] = ERR_ANSWER_DATA;
             }
             else err_block_2++;
             break;
@@ -72,10 +82,10 @@ void __attribute__((__interrupt__)) _T3Interrupt(void)
         {
             if (err_block_3 > 3)
             {
-                answer_frame_UMV64_to_RS.data[12] = ERR_ANSWER_DATA;
-                answer_frame_UMV64_to_RS.data[13] = ERR_ANSWER_DATA;
-                answer_frame_UMV64_to_RS.data[14] = ERR_ANSWER_DATA;
-                answer_frame_UMV64_to_RS.data[15] = ERR_ANSWER_DATA;
+                answer_frame_UMV32_to_RS_1.data[4] = ERR_ANSWER_DATA;
+                answer_frame_UMV32_to_RS_1.data[5] = ERR_ANSWER_DATA;
+                answer_frame_UMV32_to_RS_1.data[6] = ERR_ANSWER_DATA;
+                answer_frame_UMV32_to_RS_1.data[7] = ERR_ANSWER_DATA;
             }
             else err_block_3++;
             break;
@@ -157,50 +167,55 @@ void response_TDIM(uint8_t block_num_from_TDIM) //принимаются дан�
     if (block_num_from_TDIM != BLOCK_NUM_0 && block_num_from_TDIM != BLOCK_NUM_1 &&
         block_num_from_TDIM != BLOCK_NUM_2 && block_num_from_TDIM != BLOCK_NUM_3)
         return;
-        
+    
+    /*if (block_num_from_TDIM != block_num)
+        return;*/
+    
     /*__delay_ms(40);//40
     if (0 == DET) return; // если запрос в ТДИМ от другого модема, то игнорировать
     */
     in_1_8 = receive_byte_line();
     in_9_16 = receive_byte_line();
     
-    answer_frame_UMV64_to_RS.null_byte = NULL_BYTE;
-    answer_frame_UMV64_to_RS.addr = get_addr();
+    answer_frame_UMV32_to_RS_0.null_byte = NULL_BYTE;
+    answer_frame_UMV32_to_RS_0.addr = get_addr();
+    answer_frame_UMV32_to_RS_1.null_byte = NULL_BYTE;
+    answer_frame_UMV32_to_RS_1.addr = get_addr();
     switch (block_num)
     {
         case BLOCK_NUM_0:
         {
-            answer_frame_UMV64_to_RS.data[0] = form_answer_data(in_1_8, FIRST_HALF);
-            answer_frame_UMV64_to_RS.data[1] = form_answer_data(in_1_8, SECOND_HALF);
-            answer_frame_UMV64_to_RS.data[2] = form_answer_data(in_9_16, FIRST_HALF);
-            answer_frame_UMV64_to_RS.data[3] = form_answer_data(in_9_16, SECOND_HALF);
+            answer_frame_UMV32_to_RS_0.data[0] = form_answer_data(in_1_8, FIRST_HALF);
+            answer_frame_UMV32_to_RS_0.data[1] = form_answer_data(in_1_8, SECOND_HALF);
+            answer_frame_UMV32_to_RS_0.data[2] = form_answer_data(in_9_16, FIRST_HALF);
+            answer_frame_UMV32_to_RS_0.data[3] = form_answer_data(in_9_16, SECOND_HALF);
             err_block_0 = 0;
             break;
         }
         case BLOCK_NUM_1:
         {
-            answer_frame_UMV64_to_RS.data[4] = form_answer_data(in_1_8, FIRST_HALF);
-            answer_frame_UMV64_to_RS.data[5] = form_answer_data(in_1_8, SECOND_HALF);
-            answer_frame_UMV64_to_RS.data[6] = form_answer_data(in_9_16, FIRST_HALF);
-            answer_frame_UMV64_to_RS.data[7] = form_answer_data(in_9_16, SECOND_HALF);
+            answer_frame_UMV32_to_RS_0.data[4] = form_answer_data(in_1_8, FIRST_HALF);
+            answer_frame_UMV32_to_RS_0.data[5] = form_answer_data(in_1_8, SECOND_HALF);
+            answer_frame_UMV32_to_RS_0.data[6] = form_answer_data(in_9_16, FIRST_HALF);
+            answer_frame_UMV32_to_RS_0.data[7] = form_answer_data(in_9_16, SECOND_HALF);
             err_block_1 = 0;
             break;
         }
         case BLOCK_NUM_2:
         {
-            answer_frame_UMV64_to_RS.data[8] = form_answer_data(in_1_8, FIRST_HALF);
-            answer_frame_UMV64_to_RS.data[9] = form_answer_data(in_1_8, SECOND_HALF);
-            answer_frame_UMV64_to_RS.data[10] = form_answer_data(in_9_16, FIRST_HALF);
-            answer_frame_UMV64_to_RS.data[11] = form_answer_data(in_9_16, SECOND_HALF);
+            answer_frame_UMV32_to_RS_1.data[0] = form_answer_data(in_1_8, FIRST_HALF);
+            answer_frame_UMV32_to_RS_1.data[1] = form_answer_data(in_1_8, SECOND_HALF);
+            answer_frame_UMV32_to_RS_1.data[2] = form_answer_data(in_9_16, FIRST_HALF);
+            answer_frame_UMV32_to_RS_1.data[3] = form_answer_data(in_9_16, SECOND_HALF);
             err_block_2 = 0;
             break;
         }
         case BLOCK_NUM_3:
         {
-            answer_frame_UMV64_to_RS.data[12] = form_answer_data(in_1_8, FIRST_HALF);
-            answer_frame_UMV64_to_RS.data[13] = form_answer_data(in_1_8, SECOND_HALF);
-            answer_frame_UMV64_to_RS.data[14] = form_answer_data(in_9_16, FIRST_HALF);
-            answer_frame_UMV64_to_RS.data[15] = form_answer_data(in_9_16, SECOND_HALF);
+            answer_frame_UMV32_to_RS_1.data[4] = form_answer_data(in_1_8, FIRST_HALF);
+            answer_frame_UMV32_to_RS_1.data[5] = form_answer_data(in_1_8, SECOND_HALF);
+            answer_frame_UMV32_to_RS_1.data[6] = form_answer_data(in_9_16, FIRST_HALF);
+            answer_frame_UMV32_to_RS_1.data[7] = form_answer_data(in_9_16, SECOND_HALF);
             err_block_3 = 0;
             break;
         }
@@ -218,7 +233,7 @@ void response_TDIM(uint8_t block_num_from_TDIM) //принимаются дан�
 }
 
 
-void send_data_to_KVF(request_frame_UMV64 frame_from_KVF)
+void send_data_to_KVF(request_frame_UMV32 frame_from_KVF, uint8_t block)
 {
     //проверить CRC
     //если правильно, то отправить в КВФ кадр ответа УМВ
@@ -233,18 +248,33 @@ void send_data_to_KVF(request_frame_UMV64 frame_from_KVF)
         return;
     }
     
-    answer_frame_UMV64_to_RS.crc16 = form_CRC16(answer_frame_UMV64_to_RS);
+    switch(block)
+    {
+        case 0:
+        {
+            answer_frame_UMV32_to_RS_0.crc16 = form_CRC16(answer_frame_UMV32_to_RS_0);
+            answer_frame_UMV32_to_RS = answer_frame_UMV32_to_RS_0;
+            break;
+        }
+        case 1:
+        {
+            answer_frame_UMV32_to_RS_1.crc16 = form_CRC16(answer_frame_UMV32_to_RS_1);
+            answer_frame_UMV32_to_RS = answer_frame_UMV32_to_RS_1;
+            break;
+        }
+    }
     
     U1MODEbits.STSEL = 1; // два стоповых бита
     TX_RS485 = 1;
     
-    send_uint8_RS485(answer_frame_UMV64_to_RS.null_byte);
-    send_uint8_RS485(answer_frame_UMV64_to_RS.addr);
-    for (i = 0; i < UMV64_DATA_SIZE; i++)
+    send_uint8_RS485(answer_frame_UMV32_to_RS.null_byte);
+    send_uint8_RS485(answer_frame_UMV32_to_RS.addr);
+    for (i = 0; i < UMV32_DATA_SIZE; i++)
     {
-        send_uint8_RS485(answer_frame_UMV64_to_RS.data[i]);
+        send_uint8_RS485(answer_frame_UMV32_to_RS.data[i]);
     }
-    send_uint16_RS485(answer_frame_UMV64_to_RS.crc16);
+    send_uint8_RS485(answer_frame_UMV32_to_RS.diag);
+    send_uint16_RS485(answer_frame_UMV32_to_RS.crc16);
     
     while (!U1STAbits.TRMT);
     TX_RS485 = 0;
@@ -345,15 +375,16 @@ static void send_carrier(void)
     }
 }
 
-static uint16_t form_CRC16(answer_frame_UMV64 answer_frame)
+static uint16_t form_CRC16(answer_frame_UMV32 answer_frame)
 {
     uint8_t tmp [SIZE_OF_ANSWER_FRAME], i;
     
-/*    tmp[0] = answer_frame.null_byte;
-    tmp[1] = 0;//answer_frame.addr;   CRC в ответе УМВ-64 считается только для поля данных -.- */
-    for (i = 0; i < UMV64_DATA_SIZE; i++)
-        tmp[i] = answer_frame.data[i];
-    return CRC16(tmp, UMV64_DATA_SIZE);
+    tmp[0] = answer_frame.null_byte;
+    tmp[1] = answer_frame.addr;   //CRC в ответе УМВ-64 считается только для поля данных -.- 
+    for (i = 0; i < UMV32_DATA_SIZE; i++)
+        tmp[i+2] = answer_frame.data[i];
+    tmp[10] = DIAG_BYTE_UMV32;
+    return CRC16(tmp, 11);
 }
 
 static uint8_t form_answer_data(uint8_t data, uint8_t half_position)

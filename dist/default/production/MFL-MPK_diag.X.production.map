@@ -88,12 +88,12 @@ section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x200               0x310           0x498  (1176)
 .const                       0x510               0x100           0x180  (384)
-.text                        0x610               0xbda          0x11c7  (4551)
-.dinit                      0x11ea                0x28            0x3c  (60)
-.init.delay32               0x1212                0x1c            0x2a  (42)
-.text                       0x122e                0x1a            0x27  (39)
+.text                        0x610               0xcba          0x1317  (4887)
+.dinit                      0x12ca                0x28            0x3c  (60)
+.init.delay32               0x12f2                0x1c            0x2a  (42)
+.text                       0x130e                0x1a            0x27  (39)
 
-                 Total program memory used (bytes):         0x186c  (6252) 4%
+                 Total program memory used (bytes):         0x19bc  (6588) 5%
 
 
 Ivt Memory  [Origin = 0x4, Length = 0xfc]
@@ -114,9 +114,9 @@ section                    address      alignment gaps    total length  (dec)
 -------                    -------      --------------    -------------------
 .nbss                        0x800                   0             0x6  (6)
 .ndata                       0x806                   0             0x2  (2)
-.bss                         0x808                   0          0x102c  (4140)
+.bss                         0x808                   0          0x1042  (4162)
 
-                 Total data memory used (bytes):         0x1034  (4148) 50%
+                 Total data memory used (bytes):         0x104a  (4170) 50%
 
 
 Dynamic Memory Usage
@@ -124,9 +124,9 @@ Dynamic Memory Usage
 region                     address                      maximum length  (dec)
 ------                     -------                      ---------------------
 heap                             0                                   0  (0)
-stack                       0x1834                               0xfcc  (4044)
+stack                       0x184a                               0xfb6  (4022)
 
-                 Maximum dynamic memory (bytes):          0xfcc  (4044)
+                 Maximum dynamic memory (bytes):          0xfb6  (4022)
 
 
 External Symbols in Program Memory (by address):
@@ -144,25 +144,25 @@ External Symbols in Program Memory (by address):
                   0x00050a                  __DefaultInterrupt
                   0x000510                  _Crc8Table
                   0x000610                  _init_answer_frame
-                  0x00064c                  _request_TDIM
-                  0x0006dc                  _response_TDIM
-                  0x0007fc                  _send_data_to_KVF
-                  0x000dd8                  _init_modem
-                  0x000ffc                  _int_ON
-                  0x00105c                  _int_OFF
-                  0x00106a                  _get_addr
-                  0x001150                  _CRC16
-                  0x0011ac                  _Crc8
-                  0x001212                  ___delay32
-                  0x00122e                  _main
+                  0x00068e                  _request_TDIM
+                  0x00071e                  _response_TDIM
+                  0x00084a                  _send_data_to_KVF
+                  0x000eb8                  _init_modem
+                  0x0010dc                  _int_ON
+                  0x00113c                  _int_OFF
+                  0x00114a                  _get_addr
+                  0x001230                  _CRC16
+                  0x00128c                  _Crc8
+                  0x0012f2                  ___delay32
+                  0x00130e                  _main
                   0xf80000                  __FBS.sec
                   0xf80002                  __FSS.sec
                   0xf80004                  __FGS.sec
 
 External Symbols in Program Memory (by name):
 
-                  0x001150                  _CRC16
-                  0x0011ac                  _Crc8
+                  0x001230                  _CRC16
+                  0x00128c                  _Crc8
                   0x000510                  _Crc8Table
                   0x0003c2                  __CNInterrupt
                   0x00050a                  __DefaultInterrupt
@@ -174,20 +174,20 @@ External Symbols in Program Memory (by name):
                   0x0002c8                  __U1RXInterrupt
                   0x000394                  __U2ErrInterrupt
                   0x000310                  __U2RXInterrupt
-                  0x001212                  ___delay32
+                  0x0012f2                  ___delay32
                   0x000252                  __data_init
                   0x000252                  __data_init_standard
                   0x00023c                  __psv_init
                   0x000200                  __resetPRI
-                  0x00106a                  _get_addr
+                  0x00114a                  _get_addr
                   0x000610                  _init_answer_frame
-                  0x000dd8                  _init_modem
-                  0x00105c                  _int_OFF
-                  0x000ffc                  _int_ON
-                  0x00122e                  _main
-                  0x00064c                  _request_TDIM
-                  0x0006dc                  _response_TDIM
-                  0x0007fc                  _send_data_to_KVF
+                  0x000eb8                  _init_modem
+                  0x00113c                  _int_OFF
+                  0x0010dc                  _int_ON
+                  0x00130e                  _main
+                  0x00068e                  _request_TDIM
+                  0x00071e                  _response_TDIM
+                  0x00084a                  _send_data_to_KVF
 
 Memory Configuration
 
@@ -331,7 +331,7 @@ __FUID3
 .comment
  *(.comment)
 
-.debug_info       0x000000       0x6974
+.debug_info       0x000000       0x69e5
  *(.debug_info)
  .debug_info      0x000000        0x1d1 build/default/production/CRC16.o
  .debug_info      0x0001d1        0x1ea build/default/production/CRC8.o
@@ -339,10 +339,10 @@ __FUID3
  .debug_info      0x001662       0x2e9c build/default/production/init.o
  .debug_info      0x0044fe       0x123d build/default/production/line_to_RS.o
  .debug_info      0x00573b        0x1f6 build/default/production/main.o
- .debug_info      0x005931       0x1043 build/default/production/request_response_TDIM.o
+ .debug_info      0x005931       0x10b4 build/default/production/request_response_TDIM.o
  *(.gnu.linkonce.wi.*)
 
-.debug_abbrev     0x000000        0x8ec
+.debug_abbrev     0x000000        0x8c8
  *(.debug_abbrev)
  .debug_abbrev    0x000000         0x6a build/default/production/CRC16.o
  .debug_abbrev    0x00006a         0xa7 build/default/production/CRC8.o
@@ -350,19 +350,19 @@ __FUID3
  .debug_abbrev    0x000321        0x1ae build/default/production/init.o
  .debug_abbrev    0x0004cf        0x1a2 build/default/production/line_to_RS.o
  .debug_abbrev    0x000671         0x7f build/default/production/main.o
- .debug_abbrev    0x0006f0        0x1fc build/default/production/request_response_TDIM.o
+ .debug_abbrev    0x0006f0        0x1d8 build/default/production/request_response_TDIM.o
 
-.debug_line       0x000000        0x8e5
+.debug_line       0x000000        0x905
  *(.debug_line)
  .debug_line      0x000000         0xa9 build/default/production/CRC16.o
  .debug_line      0x0000a9         0x91 build/default/production/CRC8.o
- .debug_line      0x00013a        0x1e9 build/default/production/RS_to_line.o
- .debug_line      0x000323        0x1ad build/default/production/init.o
- .debug_line      0x0004d0        0x14b build/default/production/line_to_RS.o
- .debug_line      0x00061b         0x95 build/default/production/main.o
- .debug_line      0x0006b0        0x235 build/default/production/request_response_TDIM.o
+ .debug_line      0x00013a        0x1f0 build/default/production/RS_to_line.o
+ .debug_line      0x00032a        0x1ad build/default/production/init.o
+ .debug_line      0x0004d7        0x14b build/default/production/line_to_RS.o
+ .debug_line      0x000622         0x95 build/default/production/main.o
+ .debug_line      0x0006b7        0x24e build/default/production/request_response_TDIM.o
 
-.debug_frame      0x000000        0x5fc
+.debug_frame      0x000000        0x5e8
  *(.debug_frame)
  .debug_frame     0x000000         0x30 build/default/production/CRC16.o
  .debug_frame     0x000030         0x30 build/default/production/CRC8.o
@@ -370,7 +370,7 @@ __FUID3
  .debug_frame     0x000214        0x164 build/default/production/init.o
  .debug_frame     0x000378         0xac build/default/production/line_to_RS.o
  .debug_frame     0x000424         0x30 build/default/production/main.o
- .debug_frame     0x000454        0x1a8 build/default/production/request_response_TDIM.o
+ .debug_frame     0x000454        0x194 build/default/production/request_response_TDIM.o
 
 .debug_str        0x000000        0x2ca
  *(.debug_str)
@@ -1347,10 +1347,10 @@ __c30_signature
 .ndata              0x0806          0x2
  .ndata             0x0806          0x2 build/default/production/request_response_TDIM.o
 
-.bss                0x0808       0x102c
+.bss                0x0808       0x1042
  .bss               0x0808        0x80c build/default/production/RS_to_line.o
  .bss               0x1014        0x80c build/default/production/line_to_RS.o
- .bss               0x1820         0x14 build/default/production/request_response_TDIM.o
+ .bss               0x1820         0x2a build/default/production/request_response_TDIM.o
 
 .ivt._U1RXInterrupt
                   0x00002a          0x2
@@ -1404,31 +1404,31 @@ __c30_signature
  .const             0x8510        0x100 build/default/production/CRC8.o
                     0x8510                  _Crc8Table
 
-.text             0x000610        0xbda
- .text            0x000610        0x4ea build/default/production/request_response_TDIM.o
+.text             0x000610        0xcba
+ .text            0x000610        0x58e build/default/production/request_response_TDIM.o
                   0x000610                  _init_answer_frame
-                  0x00064c                  _request_TDIM
-                  0x0006dc                  _response_TDIM
-                  0x0007fc                  _send_data_to_KVF
- .text            0x000afa        0x2de build/default/production/RS_to_line.o
- .text            0x000dd8        0x2a8 build/default/production/init.o
-                  0x000dd8                  _init_modem
-                  0x000ffc                  _int_ON
-                  0x00105c                  _int_OFF
-                  0x00106a                  _get_addr
- .text            0x001080         0xd0 build/default/production/line_to_RS.o
- .text            0x001150         0x5c build/default/production/CRC16.o
-                  0x001150                  _CRC16
- .text            0x0011ac         0x3e build/default/production/CRC8.o
-                  0x0011ac                  _Crc8
+                  0x00068e                  _request_TDIM
+                  0x00071e                  _response_TDIM
+                  0x00084a                  _send_data_to_KVF
+ .text            0x000b9e        0x31a build/default/production/RS_to_line.o
+ .text            0x000eb8        0x2a8 build/default/production/init.o
+                  0x000eb8                  _init_modem
+                  0x0010dc                  _int_ON
+                  0x00113c                  _int_OFF
+                  0x00114a                  _get_addr
+ .text            0x001160         0xd0 build/default/production/line_to_RS.o
+ .text            0x001230         0x5c build/default/production/CRC16.o
+                  0x001230                  _CRC16
+ .text            0x00128c         0x3e build/default/production/CRC8.o
+                  0x00128c                  _Crc8
 
-.dinit            0x0011ea         0x28
- .dinit           0x0011ea         0x28 data_init
+.dinit            0x0012ca         0x28
+ .dinit           0x0012ca         0x28 data_init
 
-.init.delay32     0x001212         0x1c
- .init.delay32    0x001212         0x1c c:/program files (x86)/microchip/xc16/v1.32/bin/bin/../../lib\liblega-pic30-elf.a(delay32.Leo)
-                  0x001212                  ___delay32
+.init.delay32     0x0012f2         0x1c
+ .init.delay32    0x0012f2         0x1c c:/program files (x86)/microchip/xc16/v1.32/bin/bin/../../lib\liblega-pic30-elf.a(delay32.Leo)
+                  0x0012f2                  ___delay32
 
-.text             0x00122e         0x1a
- .text            0x00122e         0x1a build/default/production/main.o
-                  0x00122e                  _main
+.text             0x00130e         0x1a
+ .text            0x00130e         0x1a build/default/production/main.o
+                  0x00130e                  _main

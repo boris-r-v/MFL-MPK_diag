@@ -67,10 +67,13 @@
 #define BLOCK_NUM_2             0xA5//0xD2
 #define BLOCK_NUM_3             0xE1//0xC3
 #define UMV64_DATA_SIZE         16//8
-#define SETTING_BYTE            0xE7
+#define UMV32_DATA_SIZE         8
+#define SETTING_BYTE_UMV64      0xE7
+#define SETTING_BYTE_UMV32      0xE3
+#define DIAG_BYTE_UMV32         0x00
 #define SIZE_OF_REQUEST_FRAME   3
-#define SIZE_OF_ANSWER_FRAME    18//10
-#define INIT_ANSWER_DATA        0xAA
+#define SIZE_OF_ANSWER_FRAME    11//10
+#define INIT_ANSWER_DATA        0x55
 #define ERR_ANSWER_DATA         INIT_ANSWER_DATA
 #define FIRST_HALF              0
 #define SECOND_HALF             1
@@ -110,7 +113,24 @@ typedef struct
 {
     uint8_t null_byte;
     uint8_t addr;
+    uint8_t data[UMV32_DATA_SIZE];
+    uint8_t diag;//0x00
+    uint16_t crc16;
+} answer_frame_UMV32;
+
+typedef struct
+{
+    uint8_t null_byte;
+    uint8_t addr;
     uint8_t setting_byte;//0xE7
     uint16_t crc16;
 } request_frame_UMV64;
+
+typedef struct
+{
+    uint8_t null_byte;
+    uint8_t addr;
+    uint8_t setting_byte;//0xEX
+    uint16_t crc16;
+} request_frame_UMV32;
 #endif // COMMON_DRIVER_H
