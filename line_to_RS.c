@@ -14,30 +14,21 @@ static void send_data(void);
 
 void __attribute__((__interrupt__)) _CNInterrupt(void)
 {
-
     if (0 == DET)
     {
         IFS1bits.CNIF = 0;
         return;
     }
     
+    uint8_t byte_from_TDIM;
+    
     ClrWdt();
     HL1 = 1;
-    if (receive_frame())
-    {
-        if (frame_to_RS.null_byte == COMMAND_SEND_TO_RS)
-        {
-            HL1 = 0;
-            HL2 = 1;
-            send_data();
-            /*TMR3 = 0x00; // Clear 32-bit Timer (msw)
-            TMR2 = 0x00; // Clear 32-bit Timer (lsw)
-            IFS0bits.T3IF = 0; //Clear Timer3 interrupt flag
-            T2CONbits.TON = 1; // Start 32-bit Timer*/
-        }
-        else
-            response_TDIM(frame_to_RS.null_byte);
-    }
+    
+    byte_from_TDIM = receive_byte();
+    
+    response_TDIM(byte_from_TDIM);
+    
     HL1 = 0;
     HL2 = 0;
 
@@ -50,11 +41,12 @@ void __attribute__((__interrupt__)) _CNInterrupt(void)
 
 
 
-static bool receive_frame(void)
+/*static bool receive_frame(void)
 {
     uint8_t head[SIZE_OF_HEAD];
     
     receive_byte();
+    Nop();
     response_TDIM(BLOCK_NUM_0);
     return 0;
     
@@ -117,7 +109,7 @@ static bool receive_frame(void)
     
     return 1;
 }
-
+*/
 static void send_data(void)
 {
     U1MODEbits.STSEL = 1; // два стоповых бита

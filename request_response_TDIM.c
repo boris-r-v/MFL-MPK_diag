@@ -23,6 +23,8 @@ void init_answer_frame(void)
 {
     uint8_t i;
     
+    block_num = BLOCK_NUM_1;
+    
     answer_frame_UMV32_to_RS_0.null_byte = NULL_BYTE;
     answer_frame_UMV32_to_RS_0.addr = get_addr();
     for (i = 0; i < UMV32_DATA_SIZE; i++)
@@ -98,7 +100,6 @@ void __attribute__((__interrupt__)) _T3Interrupt(void)
     }
     
     update_data = true;
-    //request_TDIM();
     TMR3 = 0x00; // Clear 32-bit Timer (msw)
     TMR2 = 0x00; // Clear 32-bit Timer (lsw)
     IFS0bits.T3IF = 0; //Clear Timer3 interrupt flag
@@ -164,16 +165,19 @@ void response_TDIM(uint8_t block_num_from_TDIM) //принимаются дан�
 {
     uint8_t in_1_8, in_9_16;
     
-    if (block_num_from_TDIM != BLOCK_NUM_0 && block_num_from_TDIM != BLOCK_NUM_1 &&
+    /*if (block_num_from_TDIM != BLOCK_NUM_0 && block_num_from_TDIM != BLOCK_NUM_1 &&
         block_num_from_TDIM != BLOCK_NUM_2 && block_num_from_TDIM != BLOCK_NUM_3)
-        return;
-    
-    /*if (block_num_from_TDIM != block_num)
         return;*/
-    
-    /*__delay_ms(40);//40
-    if (0 == DET) return; // если запрос в ТДИМ от другого модема, то игнорировать
-    */
+    //Nop();
+    /*if (block_num_from_TDIM != 0xE0 && block_num_from_TDIM != 0xF0 && block_num_from_TDIM != block_num)
+    {
+        receive_byte_line();
+        receive_byte_line();
+        return;
+    }*/
+        
+    Nop();
+    Nop();
     in_1_8 = receive_byte_line();
     in_9_16 = receive_byte_line();
     

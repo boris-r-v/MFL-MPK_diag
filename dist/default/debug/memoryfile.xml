@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project>
-  <executable name="dist/default/production/MFL-MPK_diag.X.production.elf">
+  <executable name="dist/default/debug/MFL-MPK_diag.X.debug.elf">
     <memory name="data">
       <units>bytes</units>
       <length>8192</length>
-      <used>4170</used>
-      <free>4022</free>
+      <used>4250</used>
+      <free>3942</free>
     </memory>
     <memory name="program">
       <units>bytes</units>
       <length>131328</length>
-      <used>6486</used>
-      <free>124842</free>
+      <used>6528</used>
+      <free>124800</free>
     </memory>
   </executable>
 </project>
