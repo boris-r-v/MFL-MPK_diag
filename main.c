@@ -8,7 +8,7 @@ int main(void)
     RX_FX604;
     while (1)
     {
-        //__delay_ms(400);
+        __delay_ms(500);
         request_TDIM();
     }
 

@@ -26,7 +26,7 @@ void __attribute__((__interrupt__)) _U1RXInterrupt(void)
     receive_data_RS485();
     is_request_UMV32 = request_UMV32();
     
-    if (!is_request_UMV32)
+    /*if (!is_request_UMV32)
     {
         HL2 = 0;
         HL1 = 1;
@@ -35,7 +35,7 @@ void __attribute__((__interrupt__)) _U1RXInterrupt(void)
         TMR2 = 0x00; // Clear 32-bit Timer (lsw)
         IFS0bits.T3IF = 0; //Clear Timer3 interrupt flag
         T2CONbits.TON = 1; // Start 32-bit Timer
-    }
+    }*/
 
     HL1 = 0;
     HL2 = 0;

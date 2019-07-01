@@ -10,9 +10,9 @@ CND_CONF=default
 CND_DISTDIR=dist
 TMPDIR=build/${CND_CONF}/${IMAGE_TYPE}/tmp-packaging
 TMPDIRNAME=tmp-packaging
-OUTPUT_PATH=dist/${CND_CONF}/${IMAGE_TYPE}/MFL-MPK_diag.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
-OUTPUT_BASENAME=MFL-MPK_diag.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
-PACKAGE_TOP_DIR=mfl-mpkdiag.x/
+OUTPUT_PATH=dist/${CND_CONF}/${IMAGE_TYPE}/MFL-MPK_diag.X123.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
+OUTPUT_BASENAME=MFL-MPK_diag.X123.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
+PACKAGE_TOP_DIR=mfl-mpkdiag.x123/
 
 # Functions
 function checkReturnCode
@@ -57,15 +57,15 @@ mkdir -p ${TMPDIR}
 
 # Copy files and create directories and links
 cd "${TOP}"
-makeDirectory ${TMPDIR}/mfl-mpkdiag.x/bin
+makeDirectory ${TMPDIR}/mfl-mpkdiag.x123/bin
 copyFileToTmpDir "${OUTPUT_PATH}" "${TMPDIR}/${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}" 0755
 
 
 # Generate tar file
 cd "${TOP}"
-rm -f ${CND_DISTDIR}/${CND_CONF}/package/mfl-mpkdiag.x.tar
+rm -f ${CND_DISTDIR}/${CND_CONF}/package/mfl-mpkdiag.x123.tar
 cd ${TMPDIR}
-tar -vcf ../../../../${CND_DISTDIR}/${CND_CONF}/package/mfl-mpkdiag.x.tar *
+tar -vcf ../../../../${CND_DISTDIR}/${CND_CONF}/package/mfl-mpkdiag.x123.tar *
 checkReturnCode
 
 # Cleanup

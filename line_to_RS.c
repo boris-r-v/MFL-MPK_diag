@@ -25,9 +25,9 @@ void __attribute__((__interrupt__)) _CNInterrupt(void)
     ClrWdt();
     HL1 = 1;
     
-    byte_from_TDIM = receive_byte();
+    //byte_from_TDIM = receive_byte();
     
-    response_TDIM(byte_from_TDIM);
+    response_TDIM(1);//byte_from_TDIM);
     
     HL1 = 0;
     HL2 = 0;

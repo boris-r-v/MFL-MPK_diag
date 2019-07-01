@@ -46,7 +46,7 @@ void __attribute__((__interrupt__)) _T3Interrupt(void)
     {
         case BLOCK_NUM_0:
         {
-            if (err_block_0 > 3)
+            if (err_block_0 >= NUM_OF_NOT_ANSWER)
             {
                 answer_frame_UMV32_to_RS_0.data[0] = ERR_ANSWER_DATA;
                 answer_frame_UMV32_to_RS_0.data[1] = ERR_ANSWER_DATA;
@@ -58,7 +58,7 @@ void __attribute__((__interrupt__)) _T3Interrupt(void)
         }
         case BLOCK_NUM_1:
         {
-            if (err_block_1 > 3)
+            if (err_block_1 >= NUM_OF_NOT_ANSWER)
             {
                 answer_frame_UMV32_to_RS_0.data[4] = ERR_ANSWER_DATA;
                 answer_frame_UMV32_to_RS_0.data[5] = ERR_ANSWER_DATA;
@@ -70,7 +70,7 @@ void __attribute__((__interrupt__)) _T3Interrupt(void)
         }
         case BLOCK_NUM_2:
         {
-            if (err_block_2 > 3)
+            if (err_block_2 >= NUM_OF_NOT_ANSWER)
             {
                 answer_frame_UMV32_to_RS_1.data[0] = ERR_ANSWER_DATA;
                 answer_frame_UMV32_to_RS_1.data[1] = ERR_ANSWER_DATA;
@@ -82,7 +82,7 @@ void __attribute__((__interrupt__)) _T3Interrupt(void)
         }
         case BLOCK_NUM_3:
         {
-            if (err_block_3 > 3)
+            if (err_block_3 >= NUM_OF_NOT_ANSWER)
             {
                 answer_frame_UMV32_to_RS_1.data[4] = ERR_ANSWER_DATA;
                 answer_frame_UMV32_to_RS_1.data[5] = ERR_ANSWER_DATA;
@@ -109,6 +109,8 @@ void __attribute__((__interrupt__)) _T3Interrupt(void)
 void request_TDIM(void)
 {
     if (!update_data) return;
+    
+    int_OFF();
     
     HL1 = 1;
     ClrWdt();
@@ -148,6 +150,13 @@ void request_TDIM(void)
     TMR2 = 0x00; // Clear 32-bit Timer (lsw)
     IFS0bits.T3IF = 0; //Clear Timer3 interrupt flag
     T2CONbits.TON = 1; // Start 32-bit Timer
+    
+    int_ON();
+    
+    TMR3 = 0x00; // Clear 32-bit Time`r (msw)
+    TMR2 = 0x00; // Clear 32-bit Timer (lsw)
+    IFS0bits.T3IF = 0; //Clear Timer3 interrupt flag
+    T2CONbits.TON = 1; // Start 32-bit Timer
     HL1 = 0;
 }
 
@@ -175,9 +184,7 @@ void response_TDIM(uint8_t block_num_from_TDIM) //принимаются дан�
         receive_byte_line();
         return;
     }*/
-        
-    Nop();
-    Nop();
+    receive_byte_line();    
     in_1_8 = receive_byte_line();
     in_9_16 = receive_byte_line();
     
@@ -393,51 +400,51 @@ static uint16_t form_CRC16(answer_frame_UMV32 answer_frame)
 
 static uint8_t form_answer_data(uint8_t data, uint8_t half_position)
 {
-    uint8_t answer = INIT_ANSWER_DATA;
+    static uint8_t answer = INIT_ANSWER_DATA;
     
     if (half_position == SECOND_HALF)
     {
         if (data & 0b00000001)
-            answer &= 0b00111111;
-        else
             answer |= 0b11000000;
-        
+        else
+            answer &= 0b00111111;
+                    
         if (data & 0b00000010)
-            answer &= 0b11001111;
-        else
             answer |= 0b00110000;
-        
+        else
+            answer &= 0b11001111;
+                    
         if (data & 0b00000100)
-            answer &= 0b11110011;
-        else
             answer |= 0b00001100;
-        
-        if (data & 0b00001000)
-            answer &= 0b11111100;
         else
+            answer &= 0b11110011;
+                    
+        if (data & 0b00001000)
             answer |= 0b00000011;
+        else
+            answer &= 0b11111100;
     }
     if (half_position == FIRST_HALF)
     {
         if (data & 0b00010000)
-            answer &= 0b00111111;
-        else
             answer |= 0b11000000;
-        
+        else
+            answer &= 0b00111111;
+                    
         if (data & 0b00100000)
-            answer &= 0b11001111;
-        else
             answer |= 0b00110000;
-        
+        else
+            answer &= 0b11001111;
+                    
         if (data & 0b01000000)
-            answer &= 0b11110011;
-        else
             answer |= 0b00001100;
-        
-        if (data & 0b10000000)
-            answer &= 0b11111100;
         else
+            answer &= 0b11110011;
+                    
+        if (data & 0b10000000)
             answer |= 0b00000011;
+        else
+            answer &= 0b11111100;
     }
     return answer;
 }

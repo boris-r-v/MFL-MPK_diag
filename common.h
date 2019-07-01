@@ -73,8 +73,9 @@
 #define DIAG_BYTE_UMV32         0x00
 #define SIZE_OF_REQUEST_FRAME   3
 #define SIZE_OF_ANSWER_FRAME    11//10
-#define INIT_ANSWER_DATA        0x55
+#define INIT_ANSWER_DATA        0x00
 #define ERR_ANSWER_DATA         INIT_ANSWER_DATA
+#define NUM_OF_NOT_ANSWER       3
 #define FIRST_HALF              0
 #define SECOND_HALF             1
 #define SET_1_SEC_T3            PR3 = 0x0072; PR2 = 0x0000;//72
